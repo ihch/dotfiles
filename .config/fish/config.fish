@@ -5,7 +5,6 @@
 alias home "cd /mnt/c/Users/$USER_NAME"
 alias desktop "cd /mnt/c/Users/$USER_NAME/Desktop"
 alias vim "vim -p"
-alias cd "cd $argv[1]; ls"
 # }}}
 
 # my function {{{
@@ -20,6 +19,11 @@ function chrome
   /mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application/chrome.exe $url
 end
 
+# cd_ls
+function cd
+  builtin cd $argv[1]
+  ls
+end
 # }}}
 
 # anyenv {{{
