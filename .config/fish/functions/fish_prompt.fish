@@ -16,8 +16,11 @@
 
 
 set -g current_bg NONE
-set segment_separator \uE0B0
-set right_segment_separator \uE0B0
+# set segment_separator \uE0B0
+# set right_segment_separator \uE0B0
+set segment_separator '⮀'
+set right_segment_separator '⮂'
+
 # ===========================
 # Helper methods
 # ===========================
@@ -62,9 +65,7 @@ function prompt_segment -d "Function to draw a segment"
   if [ "$current_bg" != 'NONE' -a "$argv[1]" != "$current_bg" ]
     set_color -b $bg
     set_color $current_bg
-    set sep '⮀'
-    # echo -n "$segment_separator "
-    echo -n "$sep "
+    echo -n "$segment_separator "
     set_color -b $bg
     set_color $fg
   else
@@ -80,16 +81,15 @@ end
 
 function fish_right_prompt -d "Write out the right prompt"
     date '+%m/%d/%y'
-    echo -n -s "hoge"
+    # echo -n "[" "$date" "]"
+    # echo "[" $date "]"
 end
 
 function prompt_finish -d "Close open segments"
   if [ -n $current_bg ]
     set_color -b normal
     set_color $current_bg
-    set sep '⮀'
-    # echo -n "$segment_separator "
-    echo -n "$sep "
+    echo -n "$segment_separator "
   end
   set -g current_bg NONE
 end
