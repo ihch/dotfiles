@@ -80,7 +80,10 @@ function prompt_segment -d "Function to draw a segment"
 end
 
 function fish_right_prompt -d "Write out the right prompt"
-    date '+%m/%d/%y'
+    set_color blue
+    echo -n "["
+    date '+%h/%d/%Y %H:%M:%S'
+    echo -n "]"
     # echo -n "[" "$date" "]"
     # echo "[" $date "]"
 end
