@@ -238,7 +238,9 @@ function fish_prompt
   prompt_user
   prompt_dir
   type -q hg;  and prompt_hg
-  type -q git; and prompt_git
+  if test (prompt_pwd) != "~"
+    type -q git; and prompt_git
+  end
   type -q svn; and prompt_svn
   # prompt_right_segment yellow white "hoge"
   # fish_right_prompt
