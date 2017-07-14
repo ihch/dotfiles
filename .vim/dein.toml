@@ -49,6 +49,7 @@ let g:neocomplete#force_omni_input_patterns.python =
 
 [[plugins]]
 repo = 'Shougo/neosnippet'
+depends = ['neosnippet-snippets']
 hook_add = '''
 " Plugin key-mappings.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
@@ -71,11 +72,12 @@ if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
 
-let g:neosnippet#snippets_directory='~/.cache/dein/repos/github.com/Shougo/neosnippet-snippets/snippets/'
+let g:neosnippet#snippets_directory='~/.vim/snippets/'
 
 '''
 
-# snippetを追加したいときは'~/.cache/dein/repos/github.com/Shougo/neosnippet-snippets/snippets/'の下に書く
+# snippetを追加したいときは'~/.vim/snippets/'の下に書く
+# snippetの書式は'~/.cache/dein/repos/github.com/Shougo/neosnippet-snippets/neosnippets/'の中のファイルを見て
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
 
