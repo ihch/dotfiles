@@ -90,8 +90,8 @@ set t_Co=256
 set background=dark
 "let g:solarized_termcolors=256
 "colorscheme molokai
-"colorscheme hybrid
-colorscheme solarized
+colorscheme hybrid
+"colorscheme solarized
 "let g:molokai_original=1
 
 set tabstop=2                       "タブ文字幅
