@@ -17,6 +17,37 @@ hook_post_update = '''
 '''
 
 [[plugins]]
+repo = 'Shougo/neocomplete.vim'
+hook_add = '''
+let g:neocomplete#force_overwrite_completefunc = 1
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_underbar_completion = 1
+let g:neocomplete#min_syntax_length = 3
+imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+imap <expr><CR>  pumvisible() ? neocomplete#close_popup() : "\<Plug>(smartinput_CR)"
+imap <expr><C-h> neocomplete#smart_close_popup()
+
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.c =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+let g:neocomplete#force_omni_input_patterns.cpp =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+
+"let g:neocomplete#force_omni_input_patterns.python =
+"      \ '\h\w*\|[^. \t]\.\w*'
+autocmd FileType python setlocal omnifunc=jedi#completions
+let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
+	let g:jedi#smart_auto_mappings = 0
+let g:neocomplete#force_omni_input_patterns.python = 
+      \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+
+'''
+
+[[plugins]]
 repo = 'scrooloose/nerdtree'
 
 [[plugins]]
@@ -36,7 +67,8 @@ repo = 'tpope/vim-fugitive'
 repo = 'itchyny/lightline.vim'
 hook_add = '''
 let g:lightline = {
-\ 'colorscheme': 'solarized',
+" \ 'colorscheme': 'solarized',
+\ 'colorscheme': 'wombat',
 \ 'mode_map': {'c': 'NORMAL'},
 \ 'active': {
 \   'left': [
@@ -175,3 +207,7 @@ endfunction
 
 [[plugins]]
 repo = 'altercation/vim-colors-solarized'
+
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+
