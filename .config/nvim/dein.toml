@@ -41,11 +41,11 @@ if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
 
-let g:neosnippet#snippets_directory='~/.vim/snippets/'
+let g:neosnippet#snippets_directory='~/.config/nvim/snippets/'
 
 '''
 
-# snippetを追加したいときは'~/.vim/snippets/'の下に書く
+# snippetを追加したいときは'~/.config/nvim/snippets/'の下に書く
 # snippetの書式は'~/.cache/dein/repos/github.com/Shougo/neosnippet-snippets/neosnippets/'の中のファイルを見て
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
