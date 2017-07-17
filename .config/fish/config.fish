@@ -1,10 +1,21 @@
 . /home/nemu_sou/.config/fish/private.fish
 . /home/nemu_sou/.config/fish/functions/fish_prompt.fish
 
+. ~/.mintty-colors-solarized/sol.dark
+set dircolors ~/dircolors-solarized/dircolors.ansi-dark
+
+# linuxbrew
+set -x PATH "$HOME/.linuxbrew/bin" $PATH
+set -x MANPATH "$HOME/.linuxbrew/share/man" $MANPATH
+set -x INFOPATH "$HOME/.linuxbrew/share/info" $INFOPATH
+
+set -x XDG_CONFIG_HOME ~/.config
+
 # alias {{{
 alias home "cd /mnt/c/Users/$USER_NAME"
 alias desktop "cd /mnt/c/Users/$USER_NAME/Desktop"
 alias vim "vim -p"
+alias vim "nvim"
 # }}}
 
 # my function {{{
