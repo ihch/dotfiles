@@ -27,3 +27,28 @@ let g:Tlist_Exit_OnlyWindow = 1      " タグリストだけが表示されて�
 let g:Tlist_File_Fold_Auto_Close = 1 " ファイルが非アクティブのとき自動的にタグリストを閉じるか
 '''
 
+[[plugins]]
+repo = 'justmao945/vim-clang'
+on_ft = ['c', 'cpp']
+# hook_add {{{
+hook_add = '''
+let g:clang_auto = 0
+let g:clang_complete_auto = 0
+let g:clang_auto_select = 0
+let g:clang_use_library = 1
+let g:clang_c_completeopt = 'menuone,preview,noinsert,noselect'
+let g:clang_cpp_completeopt = 'menuone,preview,noinsert,noselect'
+let g:clang_exec = 'clang++'
+let g:clang_format_exec = 'clang-format'
+let g:clang_c_options = '-std=c11'
+let g:clang_cpp_options =
+      \ '-std=c++14 -stdlib=libc++
+      "\ -I/usr/local/Cellar/gcc/6.3.0_1/include/c++/6.3.0/x86_64-apple-darwin16.3.0/
+      \ -I~/.linuxbrew/Cellar/gcc/5.3.0/include/c++/5.3.0/
+      \ -I~/.linuxbrew/Cellar/gcc/5.3.0/include/c++/5.3.0/x86_64-unknown-linux-gnu/'
+      "\ -I/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
+      "\ -I/usr/local/Cellar/gcc/6.3.0_1/include/c++/6.3.0/x86_64-apple-darwin16.3.0/
+      "\ -I/usr/local/Cellar/gcc/6.3.0_1/include/c++/6.3.0
+      "\ -I/usr/local/cellar/boost/1.63.0/include'
+let g:clang_cpp_options = '/usr/include/clang'
+'''
