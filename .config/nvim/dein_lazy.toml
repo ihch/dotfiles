@@ -26,5 +26,5 @@ on_ft = ['python']
 depends = ['deoplete.nvim']
 hook_source = '''
 let g:python_host_prog = '~/.anyenv/envs/pyenv/shims/python'
-let g:python_host_prog = '~/.anyenv/envs/pyenv/shims/python3'
+let g:python3_host_prog = '~/.anyenv/envs/pyenv/shims/python3'
 '''
