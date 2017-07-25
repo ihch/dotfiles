@@ -111,5 +111,6 @@ autocmd FileType python set smartindent cinwords=if,elif,else,for,while,try,exce
 autocmd FileType javascript setlocal omnifunc=tern#Complete
 autocmd FileType c,cpp set cindent cinoptions+=:0,g0
 
-let g:python3_host_prog = $PYENV_ROOT . '/shims/python3'
+let g:python_host_prog = $PYENV_ROOT . '/versions/2.7.13/bin/python2'
+let g:python3_host_prog = $PYENV_ROOT . '/versions/3.6.1/bin/python3'
 set completeopt-=preview

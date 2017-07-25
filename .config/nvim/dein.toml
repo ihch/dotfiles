@@ -70,8 +70,8 @@ repo = 'tpope/vim-fugitive'
 repo = 'itchyny/lightline.vim'
 hook_add = '''
 let g:lightline = {
-" \ 'colorscheme': 'solarized',
-\ 'colorscheme': 'wombat',
+\ 'colorscheme': 'solarized',
+" \ 'colorscheme': 'wombat',
 \ 'mode_map': {'c': 'NORMAL'},
 \ 'active': {
 \   'left': [
@@ -214,6 +214,3 @@ repo = 'altercation/vim-colors-solarized'
 #[[plugins]]
 #repo = 'w0ng/vim-hybrid'
 
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-hook_add = 'let g:deoplete#enable_at_startup = 1'
