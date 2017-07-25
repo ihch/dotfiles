@@ -1,12 +1,12 @@
 [[plugins]]
 repo = 'vim-scripts/taglist.vim'
-#on_ft = ['c', 'cpp', 'python', 'java', 'go', 'javascript', 'ruby']
+on_ft = ['c', 'cpp', 'python', 'java', 'go', 'javascript', 'ruby']
 hook_add = '''
 let Tlist_Ctags_Cmd = "~/.linuxbrew/bin/ctags"
 let g:Tlist_Show_One_File = 1
-let g:Tlist_Auto_Open = 0            " TagListをVim起動時に開くか (0,1)
+let g:Tlist_Auto_Open = 1            " TagListをVim起動時に開くか (0,1)
 let g:Tlist_Auto_Update = 1          " 新規ファイルを開いた時に自動的にタグリストに追加するか
-let g:Tlist_Close_On_Select = 1      " タグを選択時に、画面遷移後にタグリストを閉じるか
+let g:Tlist_Close_On_Select = 0      " タグを選択時に、画面遷移後にタグリストを閉じるか
 let g:Tlist_Exit_OnlyWindow = 1      " タグリストだけが表示されているときに自動的にVimを終了するか
 let g:Tlist_File_Fold_Auto_Close = 1 " ファイルが非アクティブのとき自動的にタグリストを閉じるか
 '''
