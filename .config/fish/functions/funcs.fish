@@ -15,3 +15,8 @@ function cd
   builtin cd $argv[1]
   ls
 end
+
+# copy to clip
+function copy
+  cat $argv[1] | clip
+end
