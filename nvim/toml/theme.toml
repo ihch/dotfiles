@@ -1,0 +1,5 @@
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]]
+repo = 'KeitaNakamura/neodark.vim'

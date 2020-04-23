@@ -1,0 +1,193 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'
+# hook_add {{{
+hook_add = """
+" let g:WebDevIconsOS = 'Darwin'
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+"""
+# }}}
+
+# snippetを追加したいときは'~/.config/nvim/snippets/'の下に書く
+# snippetの書式は'~/.cache/dein/repos/github.com/Shougo/neosnippet-snippets/neosnippets/'中のファイルを見て
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+# {{{
+hook_add = '''
+" plugin key-mappings.
+" note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" superTab like snippets behavior.
+" note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" for conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
+let g:neosnippet#snippets_directory='~/.config/nvim/snippets/'
+'''
+# }}}
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+# merged = 0
+rev = 'release'
+# hook_add {{{
+hook_add = '''
+set updatetime=100
+set signcolumn=yes
+function! s:show_docmentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+autocmd CursorHold * silent call CocActionAsync('highlight')
+nmap <leader> rn <Plug>(coc-rename)
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" "nnoremap <silent> K :call CocAction('doHover')<CR>
+nnoremap <silent> K :call <SID>show_docmentation()<CR>
+nnoremap <silent> F :call CocAction('format')<CR>
+'''
+# }}}
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+# {{{
+hook_add = '''
+let g:lightline = {
+  \  'colorscheme': 'PaperColor',
+  " \   'colorscheme': 'one',
+  \   'active': {
+  \       'left': [ ['mode', 'paste'],
+  \                 [ 'cocstatus', 'readonly', 'filename', 'modified'] ],
+  \       'right': [ ['lineinfo'],
+  \                  ['percent'],
+  \                  ['fileformat', 'fileencoding', 'filetype'] ],
+  \   },
+  \   'inactive': {
+  \     'left': [
+  \       ['mode'],
+  \       ['filename']
+  \     ],
+  \     'right':[
+  \       ['lineinfo']
+  \     ]
+  \   },
+  \   'tabline': {
+  \     'left': [
+  \       ['tabs']
+  \     ],
+  \     'right': [
+  \       ['close']
+  \     ]
+  \   },
+  \   'tab': {
+  \     'active': ['tabnum', 'filename', 'modified'],
+  \     'inactive': ['tabnum', 'filename', 'modified']
+  \   },
+  \   'separator': {'left': "\ue0b0", 'right': "\ue0b2"},
+  \   'subseparator': {'left': "\ue0b1", 'right': "\ue0b3 "},
+  \   'component_function': {
+  \     'cocstatus': 'coc#status',
+  \   },
+  \   'tab_component_function': {
+  \     'filename': 'MyTabFileName',
+  \     'modified': 'lightline#tab#modified',
+  \     'readonly': 'lightline#tab#readonly',
+  \     'tabnum': 'lightline#tab#tabnum',
+  \   },
+  \ }
+function! MyTabFileName(n) abort
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let filename_local = expand('#' . buflist[winnr - 1] . ':t')
+  let filename_full = expand('#' . buflist[winnr - 1] . ':p')
+  return WebDevIconsGetFileTypeSymbol(filename_full) . ' ' . (filename_local !=# '' ? filename_local : '[No Name]')
+endfunction
+function! MyFileicon()
+  return WebDevIconsGetFileTypeSymbol()
+endfunction
+function! MyFileformat()
+  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+endfunction
+'''
+# }}}
+
+[[plugins]]
+repo = 'Shougo/defx.nvim'
+# {{{
+hook_add = '''
+nnoremap <silent> <C-d> :Defx -toggle -columns=indent:git:icons:filename:type<CR>
+call defx#custom#option('_', {
+            \ 'show_ignored_files': 1,
+            \ 'winwidth': 25,
+            \ 'split': 'vertical',
+            \ 'direction': 'topleft',
+            \ 'columns': 'icons:filename:type:size:git',
+            \ })
+autocmd FileType defx call s:defx_my_settings()
+function! s:defx_my_settings() abort
+  " Define mappings
+  nnoremap <silent><buffer><expr> <CR>
+  \ defx#do_action('open', 'wincmd w \| drop')
+  nnoremap <silent><buffer><expr> c
+  \ defx#do_action('copy')
+  nnoremap <silent><buffer><expr> m
+  \ defx#do_action('move')
+  nnoremap <silent><buffer><expr> p
+  \ defx#do_action('paste')
+  nnoremap <silent><buffer><expr> v
+  \ defx#do_action('open', 'vsplit')
+  nnoremap <silent><buffer><expr> s
+  \ defx#do_action('open', 'split')
+  nnoremap <silent><buffer><expr> P
+  \ defx#do_action('open', 'pedit')
+  nnoremap <silent><buffer><expr> N
+  \ defx#do_action('new_directory')
+  nnoremap <silent><buffer><expr> n
+  \ defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> h
+  \ defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> .
+  \ defx#do_action('toggle_ignored_files')
+  nnoremap <silent><buffer><expr> ~
+  \ defx#do_action('cd')
+  nnoremap <silent><buffer><expr> q
+  \ defx#do_action('quit')
+  nnoremap <silent><buffer><expr> <Space>
+  \ defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> *
+  \ defx#do_action('toggle_select_all')
+  nnoremap <silent><buffer><expr> <C-l>
+  \ defx#do_action('redraw')
+  nnoremap <silent><buffer><expr> <C-g>
+  \ defx#do_action('print')
+endfunction
+'''
+# }}}
+
+[[plugins]]
+repo = 'kristijanhusak/defx-git'
+
+[[plugins]]
+repo = 'kristijanhusak/defx-icons'

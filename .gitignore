@@ -1,0 +1,11 @@
+# directories
+fish/functions
+fish/fish_variables
+fish/conf.d
+fish/completions
+.cache
+
+nvim/dein
+
+# files
+.netrwhist
