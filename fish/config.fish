@@ -20,3 +20,6 @@ alias l='ls'
 
 # prompt theme
 set -x pure_color_git_branch dddddd
+
+# GOPATH
+set -x GOPATH "$HOME/.go"
