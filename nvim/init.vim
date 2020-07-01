@@ -61,6 +61,9 @@ set foldmethod=marker
 " buffer
 set hidden
 
+" clipboard 共有
+set clipboard=unnamed
+
 " key mapping {{{
 inoremap jj <ESC>
 nnoremap <silent> <C-j> :bprev<CR>
