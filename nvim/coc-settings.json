@@ -1,0 +1,3 @@
+{
+  "eslint.filetypes": ["javascript", "typescript", "ts", "vue", "jsx", "tsx"]
+}

@@ -2,46 +2,6 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
-repo = 'Shougo/neosnippet.vim'
-
-[[plugins]]
-repo = 'ryanoasis/vim-devicons'
-# hook_add {{{
-hook_add = """
-" let g:WebDevIconsOS = 'Darwin'
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-"""
-# }}}
-
-# snippetを追加したいときは'~/.config/nvim/snippets/'の下に書く
-# snippetの書式は'~/.cache/dein/repos/github.com/Shougo/neosnippet-snippets/neosnippets/'中のファイルを見て
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'
-# {{{
-hook_add = '''
-" plugin key-mappings.
-" note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-" superTab like snippets behavior.
-" note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-"imap <expr><TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ neosnippet#expandable_or_jumpable() ?
-" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-" for conceal markers.
-if has('conceal')
-  set conceallevel=2 concealcursor=niv
-endif
-let g:neosnippet#snippets_directory='~/.config/nvim/snippets/'
-'''
-# }}}
-
-[[plugins]]
 repo = 'neoclide/coc.nvim'
 # merged = 0
 rev = 'release'
@@ -67,69 +27,6 @@ nmap <silent> gr <Plug>(coc-references)
 " "nnoremap <silent> K :call CocAction('doHover')<CR>
 nnoremap <silent> K :call <SID>show_docmentation()<CR>
 nnoremap <silent> F :call CocAction('format')<CR>
-'''
-# }}}
-
-[[plugins]]
-repo = 'itchyny/lightline.vim'
-# {{{
-hook_add = '''
-let g:lightline = {
-  \  'colorscheme': 'PaperColor',
-  " \   'colorscheme': 'one',
-  \   'active': {
-  \       'left': [ ['mode', 'paste'],
-  \                 [ 'cocstatus', 'readonly', 'filename', 'modified'] ],
-  \       'right': [ ['lineinfo'],
-  \                  ['percent'],
-  \                  ['fileformat', 'fileencoding', 'filetype'] ],
-  \   },
-  \   'inactive': {
-  \     'left': [
-  \       ['mode'],
-  \       ['filename']
-  \     ],
-  \     'right':[
-  \       ['lineinfo']
-  \     ]
-  \   },
-  \   'tabline': {
-  \     'left': [
-  \       ['tabs']
-  \     ],
-  \     'right': [
-  \       ['close']
-  \     ]
-  \   },
-  \   'tab': {
-  \     'active': ['tabnum', 'filename', 'modified'],
-  \     'inactive': ['tabnum', 'filename', 'modified']
-  \   },
-  \   'separator': {'left': "\ue0b0", 'right': "\ue0b2"},
-  \   'subseparator': {'left': "\ue0b1", 'right': "\ue0b3 "},
-  \   'component_function': {
-  \     'cocstatus': 'coc#status',
-  \   },
-  \   'tab_component_function': {
-  \     'filename': 'MyTabFileName',
-  \     'modified': 'lightline#tab#modified',
-  \     'readonly': 'lightline#tab#readonly',
-  \     'tabnum': 'lightline#tab#tabnum',
-  \   },
-  \ }
-function! MyTabFileName(n) abort
-  let buflist = tabpagebuflist(a:n)
-  let winnr = tabpagewinnr(a:n)
-  let filename_local = expand('#' . buflist[winnr - 1] . ':t')
-  let filename_full = expand('#' . buflist[winnr - 1] . ':p')
-  return WebDevIconsGetFileTypeSymbol(filename_full) . ' ' . (filename_local !=# '' ? filename_local : '[No Name]')
-endfunction
-function! MyFileicon()
-  return WebDevIconsGetFileTypeSymbol()
-endfunction
-function! MyFileformat()
-  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
-endfunction
 '''
 # }}}
 

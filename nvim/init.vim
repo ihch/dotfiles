@@ -36,10 +36,27 @@ if dein#check_install()
 endif
 " }}}
 
+"** ペーストするときにインデントさせない **
+inoremap <F5> <nop>
+set pastetoggle=<F5>
+
+set noswapfile                      "swpの作成無効化
+set nobackup                        "~の作成無効化
+set writebackup                     "上書き成功時に~を削除
+"set clipboard=unnamed ,autoselect  "クリップボードを共有
+set infercase
+set autoread
+set clipboard=unnamed
+
+"** 文字コード設定 **
+set encoding=utf-8                  "vim
+set fileencodings=utf-8,iso-2022-jp,cp932,sjis,euc-jp "保存するファイル
+set fencs=utf-8,iso-2022-jp,enc-jp,cp932  "開くファイル
+
 " 表示系
-set title
-set cursorline
-set cursorcolumn
+" set title
+" set cursorline
+" set cursorcolumn
 set number
 set nowrap
 
@@ -79,6 +96,7 @@ autocmd BufRead,BufNewFile *.tsx set filetype=typescript.tsx
 "}}}
 
 " detect python path
+let g:python_host_prog = '/Users/nemu_sou/.myenv/bin/python'
 let g:python3_host_prog = '~/.myenv/bin/python3'
 
 " {{{ FZF
