@@ -2,16 +2,10 @@
 repo = 'cohama/lexima.vim'
 
 [[plugins]]
-repo = 'ap/vim-css-color'
-
-[[plugins]]
 repo = 'airblade/vim-gitgutter'
 
 [[plugins]]
 repo = 'Yggdroot/indentLine'
-
-# [[plugins]]
-# repo = 'jiangmiao/auto-pairs'
 
 [[plugins]]
 repo = 'alvan/vim-closetag'
