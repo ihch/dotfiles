@@ -31,19 +31,19 @@ on_ft = ['ts', 'tsx']
 repo = 'styled-components/vim-styled-components'
 on_ft = ['jsx', 'tsx']
 
-[[plugins]]
-repo = 'posva/vim-vue'
-on_ft = ['vue']
+# [[plugins]]
+# repo = 'posva/vim-vue'
+# on_ft = ['vue']
 
-[[plugins]]
-repo = 'digitaltoad/vim-pug'
-on_ft = ['vue']
+# [[plugins]]
+# repo = 'digitaltoad/vim-pug'
+# on_ft = ['vue']
 
-[[plugins]]
-repo = 'prettier/vim-prettier'
-build = 'npm install'
-on_ft = ['javascript', 'typescript', 'vue', 'json']
-hook_add = '''
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.ts,*.vue,*.css,*.scss,*.json,*.md PrettierAsync
-'''
+# [[plugins]]
+# repo = 'prettier/vim-prettier'
+# build = 'npm install'
+# on_ft = ['javascript', 'typescript', 'vue', 'json']
+# hook_add = '''
+# let g:prettier#autoformat = 0
+# autocmd BufWritePre *.js,*.ts,*.vue,*.css,*.scss,*.json,*.md PrettierAsync
+# '''

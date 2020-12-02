@@ -1,0 +1,10 @@
+[[plugins]]
+repo = 'skanehira/preview-markdown.vim'
+on_ft=['md']
+
+[[plugins]]
+repo = 'alvan/vim-closetag'
+on_ft=['html', 'vue', 'jsx', 'tsx']
+hook_add = '''
+let g:closetag_filetypes = 'html,vue,jsx,tsx'
+'''

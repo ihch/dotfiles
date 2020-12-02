@@ -5,6 +5,7 @@ repo = 'Shougo/dein.vim'
 repo = 'neoclide/coc.nvim'
 # merged = 0
 rev = 'release'
+# rev = 'v0.0.79'
 # hook_add {{{
 hook_add = '''
 set updatetime=100
@@ -29,6 +30,69 @@ nnoremap <silent> K :call <SID>show_docmentation()<CR>
 nnoremap <silent> F :call CocAction('format')<CR>
 '''
 # }}}
+
+# [[plugins]]
+# repo = 'itchyny/lightline.vim'
+# # {{{
+# hook_add = '''
+# let g:lightline = {
+#   \  'colorscheme': 'PaperColor',
+#   " \   'colorscheme': 'one',
+#   \   'active': {
+#   \       'left': [ ['mode', 'paste'],
+#   \                 [ 'cocstatus', 'readonly', 'filename', 'modified'] ],
+#   \       'right': [ ['lineinfo'],
+#   \                  ['percent'],
+#   \                  ['fileformat', 'fileencoding', 'filetype'] ],
+#   \   },
+#   \   'inactive': {
+#   \     'left': [
+#   \       ['mode'],
+#   \       ['filename']
+#   \     ],
+#   \     'right':[
+#   \       ['lineinfo']
+#   \     ]
+#   \   },
+#   \   'tabline': {
+#   \     'left': [
+#   \       ['tabs']
+#   \     ],
+#   \     'right': [
+#   \       ['close']
+#   \     ]
+#   \   },
+#   \   'tab': {
+#   \     'active': ['tabnum', 'filename', 'modified'],
+#   \     'inactive': ['tabnum', 'filename', 'modified']
+#   \   },
+#   \   'separator': {'left': "\ue0b0", 'right': "\ue0b2"},
+#   \   'subseparator': {'left': "\ue0b1", 'right': "\ue0b3 "},
+#   \   'component_function': {
+#   \     'cocstatus': 'coc#status',
+#   \   },
+#   \   'tab_component_function': {
+#   \     'filename': 'MyTabFileName',
+#   \     'modified': 'lightline#tab#modified',
+#   \     'readonly': 'lightline#tab#readonly',
+#   \     'tabnum': 'lightline#tab#tabnum',
+#   \   },
+#   \ }
+# function! MyTabFileName(n) abort
+#   let buflist = tabpagebuflist(a:n)
+#   let winnr = tabpagewinnr(a:n)
+#   let filename_local = expand('#' . buflist[winnr - 1] . ':t')
+#   let filename_full = expand('#' . buflist[winnr - 1] . ':p')
+#   return WebDevIconsGetFileTypeSymbol(filename_full) . ' ' . (filename_local !=# '' ? filename_local : '[No Name]')
+# endfunction
+# function! MyFileicon()
+#   return WebDevIconsGetFileTypeSymbol()
+# endfunction
+# function! MyFileformat()
+#   return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+# endfunction
+# '''
+# # }}}
 
 [[plugins]]
 repo = 'Shougo/defx.nvim'
@@ -63,6 +127,8 @@ function! s:defx_my_settings() abort
   \ defx#do_action('new_directory')
   nnoremap <silent><buffer><expr> n
   \ defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> r
+  \ defx#do_action('rename')
   nnoremap <silent><buffer><expr> h
   \ defx#do_action('cd', ['..'])
   nnoremap <silent><buffer><expr> .
@@ -88,3 +154,6 @@ repo = 'kristijanhusak/defx-git'
 
 [[plugins]]
 repo = 'kristijanhusak/defx-icons'
+
+# [[plugins]]
+# repo = 'neovim/nvim-lspconfig'

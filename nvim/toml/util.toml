@@ -3,6 +3,13 @@ repo = 'cohama/lexima.vim'
 
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
+hook_add = '''
+nmap <C-h> <Plug>(GitGutterNextHunk)
+nmap <C-p> <Plug>(GitGutterPrevHunk)
+'''
+
+[[plugins]]
+repo = 'codeindulgence/vim-tig'
 
 [[plugins]]
 repo = 'Yggdroot/indentLine'

@@ -1,7 +1,10 @@
 if &compatible
   set nocompatible               " Be iMproved
 endif
-
+if exists('g:vscode')
+    " VSCode extension
+else
+    " ordinary neovim
 " {{{ dein
 let s:dein_dir = expand('~/.config/nvim/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
@@ -29,10 +32,11 @@ if dein#load_state(s:dein_dir)
 endif
 
 filetype plugin indent on
-syntax enable
+" syntax enable
 
 if dein#check_install()
   call dein#install()
+endif
 endif
 " }}}
 
@@ -74,9 +78,11 @@ set smartindent
 
 " 折りたたみ
 set foldmethod=marker
+" set foldmethod=indent
 
 " buffer
 set hidden
+set laststatus=0
 
 " clipboard 共有
 set clipboard=unnamed
@@ -85,17 +91,21 @@ set clipboard=unnamed
 inoremap jj <ESC>
 nnoremap <silent> <C-j> :bprev<CR>
 nnoremap <silent> <C-k> :bnext<CR>
-nnoremap <C-t> :<C-u>tabnew<CR>
+nnoremap <C-t> :tabnew<CR>
+nnoremap <C-b> <C-d>
+nnoremap gr gT
+" nnoremap <C-i> :tabnew<CR>:Tig<CR>
 " }}}
 
 " {{{ colorscheme
 " colorscheme hybrid
-colorscheme neodark
+" colorscheme neodark
 " }}}
 
 " {{{ autocmd filetiye
 autocmd BufRead,BufNewFile *.ts set filetype=typescript
 autocmd BufRead,BufNewFile *.tsx set filetype=typescript.tsx
+" autocmd FileType vue set foldmethod=indent foldlevel=5
 "}}}
 
 " detect python path
@@ -111,11 +121,21 @@ fun! FzfOmniFiles()
     :GitFiles
   endif
 endfun
+
+fun! FzfOmniChangeFiles()
+  let is_git = system('git status')
+  if v:shell_error
+    :Files
+  else
+    :GitFiles?
+  endif
+endfun
  
 " nnoremap <C-b> :Buffers<CR>
 nnoremap <C-g> :Rg<Space>
 " nnoremap <leader><leader> :Commands<CR>
 nnoremap <C-f> :call FzfOmniFiles()<CR>
+nnoremap <C-s> :call FzfOmniChangeFiles()<CR>
 " command! -bang -nargs=* Rg
 " \ call fzf#vim#grep(
 " \ 'rg --column --line-number --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 1,
@@ -123,3 +143,46 @@ nnoremap <C-f> :call FzfOmniFiles()<CR>
 " \ : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
 " \ <bang>0)
 " }}}
+
+" "基本的にこれだけでOK
+" lua require'nvim_lsp'.tsserver.setup{}
+" 
+" "omnifuncを設定
+" autocmd Filetype typescript setlocal omnifunc=v:lua.vim.lsp.omnifunc
+" 
+" "lsp.txtそのまま
+" nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+" nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+" nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+
+let g:session_path = '/Users/ihachihiro/Projects/vsession'
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> <C-[> <Plug>(coc-diagnostic-prev)
+nmap <silent> <C-]> <Plug>(coc-diagnostic-next)
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)<CR>
+nmap <leader>f  <Plug>(coc-format-selected)<CR>
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)<CR>
+nmap <leader>a  <Plug>(coc-codeaction-selected)<CR>
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Disabled `set number` when i open the terminal
+autocmd TermOpen * setlocal nonumber norelativenumber
