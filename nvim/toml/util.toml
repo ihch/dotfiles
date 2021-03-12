@@ -17,7 +17,15 @@ repo = 'Yggdroot/indentLine'
 [[plugins]]
 repo = 'alvan/vim-closetag'
 hook_add = '''
-let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx,*.tsx"
+let g:closetag_filetypes = "html,xhtml,phtml,php,jsx,tsx,typescriptreact"
+" "let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.php,*.jsx,*.tsx,"
+ "let g:closetag_regions =  {
+ "\ 'typescriptreact': 'jsxRegion,tsxRegion,typescriptBlock,typescriptParenExp',
+ "\ }
+
+let g:closetag_regions =  {
+\ 'typescriptreact': 'jsxRegion,tsxRegion',
+\ }
 '''
 
 [[plugins]]

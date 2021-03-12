@@ -24,7 +24,7 @@ if dein#load_state(s:dein_dir)
   call dein#load_toml(s:toml_dir . '/dein.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/theme.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/util.toml', {'lazy': 0})
-  call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
+  " call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
   call dein#load_toml(s:toml_dir . '/frontend.toml', {'lazy': 1})
 
   call dein#end()
@@ -39,6 +39,8 @@ if dein#check_install()
 endif
 endif
 " }}}
+
+let mapleader="\<Space>"
 
 "** ペーストするときにインデントさせない **
 inoremap <F5> <nop>
@@ -82,7 +84,7 @@ set foldmethod=marker
 
 " buffer
 set hidden
-set laststatus=0
+" set laststatus=0
 
 " clipboard 共有
 set clipboard=unnamed
@@ -103,8 +105,9 @@ nnoremap gr gT
 " }}}
 
 " {{{ autocmd filetiye
-autocmd BufRead,BufNewFile *.ts set filetype=typescript
-autocmd BufRead,BufNewFile *.tsx set filetype=typescript.tsx
+" autocmd BufRead,BufNewFile *.ts set filetype=typescript
+" autocmd BufRead,BufNewFile *.tsx set filetype=typescript.tsx
+" autocmd BufRead,BufNewFile *.jsx,*.tsx set filetype=typescriptreact
 " autocmd FileType vue set foldmethod=indent foldlevel=5
 "}}}
 
@@ -173,8 +176,8 @@ nmap <leader>rn <Plug>(coc-rename)
 
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)<CR>
-nmap <leader>f  <Plug>(coc-format-selected)<CR>
+xmap <leader>s  <Plug>(coc-format-selected)<CR>
+nmap <leader>s  <Plug>(coc-format-selected)<CR>
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
@@ -186,3 +189,37 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 " Disabled `set number` when i open the terminal
 autocmd TermOpen * setlocal nonumber norelativenumber
+
+nnoremap <silent> <Leader>ga    :tabnew<CR>:Tig<CR>
+nmap <Leader>f [fzf-p]
+xmap <Leader>f [fzf-p]
+
+nnoremap <silent> [fzf-p]p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
+nnoremap <silent> [fzf-p]gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
+" nnoremap <silent> [fzf-p]ga    :<C-u>CocCommand fzf-preview.GitActions<CR>
+nnoremap <silent> [fzf-p]b     :<C-u>CocCommand fzf-preview.Buffers<CR>
+nnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
+nnoremap <silent> [fzf-p]o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
+nnoremap <silent> [fzf-p]<C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
+nnoremap <silent> [fzf-p]g;    :<C-u>CocCommand fzf-preview.Changes<CR>
+nnoremap <silent> [fzf-p]/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
+nnoremap <silent> [fzf-p]*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+nnoremap          [fzf-p]gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+xnoremap          [fzf-p]gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+nnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
+nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
+nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
+
+set rtp+=/usr/local/opt/fzf
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    disable = {
+      'vue',
+    }
+  }
+}
+EOF
+
