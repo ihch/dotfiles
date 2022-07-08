@@ -1,0 +1,171 @@
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+depends = ['denops.vim']
+on_source = 'denops.vim'
+hook_source = '''
+call ddc#custom#patch_global('sources', ['nvim-lsp', 'around'])
+call ddc#custom#patch_global('sourceOptions', {
+  \ '_': {
+  \   'matchers': ['matcher_head'],
+  \   'sorters': ['sorter_rank'],
+  \ },
+  \ 'around': {'mark': 'A'},
+  \ 'nvim-lsp': {
+  \   'mark': 'lsp',
+  \   'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
+  \ })
+
+" Use Customized labels
+call ddc#custom#patch_global('sourceParams', {
+  \ 'nvim-lsp': { 'kindLabels': { 'Class': 'c' } },
+  \ })
+
+call ddc#enable()
+'''
+
+[[plugins]]
+repo = 'neovim/nvim-lspconfig'
+hook_add ='''
+lua << EOF
+-- require'lspconfig'.gopls.setup{}
+
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<C-[>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<C-]>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+-- local servers = {
+--   'denols',
+--   'tsserver',
+--   'gopls'
+-- }
+-- for _, lsp in pairs(servers) do
+--   require('lspconfig')[lsp].setup {
+--     on_attach = on_attach,
+--     flags = {
+--       -- This will be the default in neovim 0.7+
+--       debounce_text_changes = 150,
+--     }
+--   }
+-- end
+EOF
+'''
+
+[[plugins]]
+repo = 'williamboman/nvim-lsp-installer'
+hook_add = '''
+lua << EOF
+
+local nvim_lsp = require('lspconfig')
+local lsp_installer = require("nvim-lsp-installer")
+local lsp_installer_servers = require("nvim-lsp-installer.servers")
+
+local servers = {
+  "denols",
+  "tsserver",
+}
+
+lsp_installer.settings({
+  ui = {
+    icons = {
+      server_installed = "✓",
+      server_pending = "➜",
+      server_uninstalled = "✗"
+    }
+  }
+})
+
+local node_root_dir = nvim_lsp.util.root_pattern("package.json", "node_modules")
+local buf_name = vim.api.nvim_buf_get_name(0)
+local current_buf = vim.api.nvim_get_current_buf()
+local is_node_repo = node_root_dir(buf_name, current_buf) ~= nil
+
+-- Loop through the servers listed above.
+for _, server_name in pairs(servers) do
+  local server_available, server = lsp_installer_servers.get_server(server_name)
+  if server_available then
+    server:on_ready(function ()
+      -- When this particular server is ready (i.e. when installation is finished or the server is already installed),
+      -- this function will be invoked. Make sure not to use the "catch-all" lsp_installer.on_server_ready()
+      -- function to set up servers, to avoid doing setting up a server twice.
+      local opts = {}
+      if server.name == "tsserver" or server.name == "eslint" then
+        opts.autostart = is_node_repo
+      elseif server.name == "denols" then
+        opts.autostart = not(is_node_repo)
+        -- 以下は出し分けとは関係ないが設定しておくのがオススメ
+        opts.init_options = { lint = true, unstable = true, }
+      end
+      server:setup(opts)
+    end)
+    if not server:is_installed() then
+      -- Queue the server to be installed.
+      server:install()
+    end
+  end
+end
+
+EOF
+'''
+
+[[plugins]]
+repo = 'Shougo/ddc-around'
+ on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-matcher_head'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-sorter_rank'
+on_source = 'ddc.vim'
+
+# [[plugins]]
+# repo = 'Shougo/ddc-converter_remove_overlap'
+# on_source = 'ddc.vim' 
+
+[[plugins]]
+repo = 'Shougo/ddc-nvim-lsp'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'matsui54/denops-signature_help'
+on_source = 'ddc.vim'
+hook_source = '''
+call signature_help#enable()
+'''
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+on_source = 'ddc.vim'
+hook_source = '''
+call popup_preview#enable()
+'''

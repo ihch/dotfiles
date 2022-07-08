@@ -1,3 +1,0 @@
-[[plugins]]
-repo = 'skanehira/preview-markdown.vim'
-on_ft=['md']

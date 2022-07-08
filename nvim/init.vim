@@ -1,11 +1,11 @@
 if &compatible
-  set nocompatible               " Be iMproved
+  set nocompatible
 endif
+
 if exists('g:vscode')
     " VSCode extension
 else
-    " ordinary neovim
-" {{{ dein
+" ordinary neovim
 let s:dein_dir = expand('~/.config/nvim/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 let s:toml_dir = s:dein_dir . '/../toml'
@@ -21,24 +21,22 @@ let &runtimepath = s:dein_repo_dir . ',' . &runtimepath
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
 
+  call dein#load_toml(s:toml_dir . '/themes.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/dein.toml', {'lazy': 0})
-  call dein#load_toml(s:toml_dir . '/theme.toml', {'lazy': 0})
-  call dein#load_toml(s:toml_dir . '/util.toml', {'lazy': 0})
-  " call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
-  call dein#load_toml(s:toml_dir . '/frontend.toml', {'lazy': 1})
+  call dein#load_toml(s:toml_dir . '/ddc.toml', {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/ddu.toml', {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/utils.toml', {'lazy': 0})
 
   call dein#end()
   call dein#save_state()
 endif
 
 filetype plugin indent on
-" syntax enable
 
 if dein#check_install()
   call dein#install()
 endif
 endif
-" }}}
 
 let mapleader="\<Space>"
 
@@ -89,137 +87,29 @@ set hidden
 " clipboard 共有
 set clipboard=unnamed
 
-" key mapping {{{
+colorscheme neodark
+
+" key mapping
 inoremap jj <ESC>
 nnoremap <silent> <C-j> :bprev<CR>
 nnoremap <silent> <C-k> :bnext<CR>
 nnoremap <C-t> :tabnew<CR>
 nnoremap <C-b> <C-d>
 nnoremap gr gT
-" nnoremap <C-i> :tabnew<CR>:Tig<CR>
-" }}}
 
-" {{{ colorscheme
-" colorscheme hybrid
-" colorscheme neodark
-" }}}
+" set runtimepat^=~/Projects/ddu-source-git-status
+" let g:denops#debug = 1
 
-" {{{ autocmd filetiye
-" autocmd BufRead,BufNewFile *.ts set filetype=typescript
-" autocmd BufRead,BufNewFile *.tsx set filetype=typescript.tsx
-" autocmd BufRead,BufNewFile *.jsx,*.tsx set filetype=typescriptreact
-" autocmd FileType vue set foldmethod=indent foldlevel=5
-"}}}
-
-" detect python path
-let g:python_host_prog = '/Users/nemu_sou/.myenv/bin/python'
-let g:python3_host_prog = '~/.myenv/bin/python3'
-
-" {{{ FZF
-fun! FzfOmniFiles()
-  let is_git = system('git status')
-  if v:shell_error
-    :Files
-  else
-    :GitFiles
-  endif
-endfun
-
-fun! FzfOmniChangeFiles()
-  let is_git = system('git status')
-  if v:shell_error
-    :Files
-  else
-    :GitFiles?
-  endif
-endfun
- 
-" nnoremap <C-b> :Buffers<CR>
-nnoremap <C-g> :Rg<Space>
-" nnoremap <leader><leader> :Commands<CR>
-nnoremap <C-f> :call FzfOmniFiles()<CR>
-nnoremap <C-s> :call FzfOmniChangeFiles()<CR>
-" command! -bang -nargs=* Rg
-" \ call fzf#vim#grep(
-" \ 'rg --column --line-number --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 1,
-" \ <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%')
-" \ : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
-" \ <bang>0)
-" }}}
-
-" "基本的にこれだけでOK
-" lua require'nvim_lsp'.tsserver.setup{}
-" 
-" "omnifuncを設定
-" autocmd Filetype typescript setlocal omnifunc=v:lua.vim.lsp.omnifunc
-" 
-" "lsp.txtそのまま
-" nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-" nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-" nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-" nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-" nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-
-let g:session_path = '/Users/ihachihiro/Projects/vsession'
-
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> <C-[> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-]> <Plug>(coc-diagnostic-next)
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-
-" Formatting selected code.
-xmap <leader>s  <Plug>(coc-format-selected)<CR>
-nmap <leader>s  <Plug>(coc-format-selected)<CR>
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)<CR>
-nmap <leader>a  <Plug>(coc-codeaction-selected)<CR>
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Disabled `set number` when i open the terminal
-autocmd TermOpen * setlocal nonumber norelativenumber
-
-nnoremap <silent> <Leader>ga    :tabnew<CR>:Tig<CR>
-nmap <Leader>f [fzf-p]
-xmap <Leader>f [fzf-p]
-
-nnoremap <silent> [fzf-p]p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
-nnoremap <silent> [fzf-p]gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
-" nnoremap <silent> [fzf-p]ga    :<C-u>CocCommand fzf-preview.GitActions<CR>
-nnoremap <silent> [fzf-p]b     :<C-u>CocCommand fzf-preview.Buffers<CR>
-nnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
-nnoremap <silent> [fzf-p]o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
-nnoremap <silent> [fzf-p]<C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
-nnoremap <silent> [fzf-p]g;    :<C-u>CocCommand fzf-preview.Changes<CR>
-nnoremap <silent> [fzf-p]/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'"<CR>
-nnoremap <silent> [fzf-p]*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
-nnoremap          [fzf-p]gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
-xnoremap          [fzf-p]gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
-nnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
-nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
-nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
-
-set rtp+=/usr/local/opt/fzf
-
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    disable = {
-      'vue',
-    }
-  }
-}
-EOF
-
+nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <space>wa <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>
+nnoremap <silent> <space>wr <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>
+nnoremap <silent> <space>wl <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>
+nnoremap <silent> <space>D <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> <space>rn <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> <space>f <cmd>lua vim.lsp.buf.formatting()<CR>

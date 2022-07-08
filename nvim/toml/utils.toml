@@ -1,0 +1,113 @@
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+# {{{
+hook_add = '''
+let g:lightline = {
+  \  'colorscheme': 'PaperColor',
+  \   'active': {
+  \       'left': [ ['mode', 'paste'],
+  \                 [ 'cocstatus', 'readonly', 'filename', 'modified'] ],
+  \       'right': [ ['lineinfo'],
+  \                  ['percent'],
+  \                  ['fileformat', 'fileencoding', 'filetype'] ],
+  \   },
+  \   'inactive': {
+  \     'left': [
+  \       ['mode'],
+  \       ['filename']
+  \     ],
+  \     'right':[
+  \       ['lineinfo']
+  \     ]
+  \   },
+  \   'tabline': {
+  \     'left': [
+  \       ['tabs']
+  \     ],
+  \     'right': [
+  \       ['close']
+  \     ]
+  \   },
+  \   'tab': {
+  \     'active': ['tabnum', 'filename', 'modified'],
+  \     'inactive': ['tabnum', 'filename', 'modified']
+  \   },
+  \   'separator': {'left': "\ue0b0", 'right': "\ue0b2"},
+  \   'subseparator': {'left': "\ue0b1", 'right': "\ue0b3 "},
+  \   'component_function': {
+  \     'cocstatus': 'coc#status',
+  \   },
+  \   'tab_component_function': {
+  \     'modified': 'lightline#tab#modified',
+  \     'readonly': 'lightline#tab#readonly',
+  \     'tabnum': 'lightline#tab#tabnum',
+  \   },
+\ }
+" function! MyTabFileName(n) abort
+"   let buflist = tabpagebuflist(a:n)
+"   let winnr = tabpagewinnr(a:n)
+"   let filename_local = expand('#' . buflist[winnr - 1] . ':t')
+"   let filename_full = expand('#' . buflist[winnr - 1] . ':p')
+"   return WebDevIconsGetFileTypeSymbol(filename_full) . ' ' . (filename_local !=# '' ? filename_local : '[No Name]')
+" endfunction
+" function! MyFileicon()
+"   return WebDevIconsGetFileTypeSymbol()
+" endfunction
+" function! MyFileformat()
+"   return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+" endfunction
+'''
+# }}}
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+hook_add = '''
+nmap <C-h> <Plug>(GitGutterNextHunk)
+nmap <C-p> <Plug>(GitGutterPrevHunk)
+'''
+
+[[plugins]]
+repo = 'Yggdroot/indentLine'
+
+[[plugins]]
+repo = 'luochen1990/rainbow'
+# {{{
+hook_add = '''
+    let g:rainbow_active = 1
+	let g:rainbow_conf = {
+	\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+	\	'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+	\	'operators': '_,_',
+	\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+	\	'separately': {
+	\		'*': {},
+	\		'tex': {
+	\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+	\		},
+	\		'lisp': {
+	\			'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+	\		},
+	\		'vim': {
+	\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+	\		},
+	\		'html': {
+	\			'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+	\		},
+	\		'css': 0,
+	\	}
+	\}
+'''
+# }}}
+
+[[plugins]]
+repo = 'simeji/winresizer'
+hook_add = '''
+let g:winresizer_vert_resize = 1
+let g:winresizer_horiz_resize = 1
+'''
+
+# [[plugins]]
+# repo = 'kana/vim-fakeclip'
