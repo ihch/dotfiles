@@ -1,0 +1,28 @@
+[[plugins]]
+repo = 'akinsho/toggleterm.nvim'
+hook_add = '''
+" By applying the mappings this way you can pass a count to your mapping to open a specific window.
+" For example: 2<C-t> will open terminal 2
+nnoremap <silent><C-l> <cmd>exe v:count1 . "ToggleTerm"<CR>
+'''
+lua_source = '''
+require('toggleterm').setup()
+local terminal = require('toggleterm.terminal').Terminal
+
+
+local tig_window = terminal:new({
+	cmd = "tig",
+	dir = "git_dir",
+	direction = "float",
+	float_opts = {
+		border = "single"
+	},
+	hidden = true
+})
+
+function _tig_toggle()
+	tig_window:toggle()
+end
+
+vim.api.nvim_set_keymap("n", "<C-g>", "<cmd>lua _tig_toggle()<CR>", { noremap = true, silent = true })
+'''

@@ -4,11 +4,61 @@ depends = 'denops.vim'
 on_source = 'denops.vim'
 hook_add = '''
 nnoremap <silent> fp <Cmd>Ddu -name=files file_rec<CR>
-nnoremap <silent> / <Cmd>Ddu -name=search line -ui-param-startFilter=v:true<CR>
+" nnoremap <silent> / <Cmd>Ddu -name=search line -ui-param-startFilter=v:true<CR>
 nnoremap <silent> * <Cmd>Ddu -name=search line -input=`expand('<cword>')` -ui-param-startFilter=v:true<CR>
 " nnoremap <silent> n <Cmd>Ddu -name=search -resume -ui-param-startFilter=v:false<CR>
 nnoremap <silent> ;g <Cmd>Ddu -name=search rg -source-param-input=`input('Pattern: ')`<CR>
 nnoremap gs <Cmd>Ddu -name=files `finddir('.git', ';') != '' ? 'file_external' : 'file_rec'`<CR>
+
+nnoremap <leader>f <Cmd>Ddu -name=filer<CR>
+nnoremap <leader>b <Cmd>Ddu -name=filer buffer<CR>
+autocmd FileType ddu-filer call s:ddu_my_settings()
+function! s:ddu_my_settings() abort
+  nnoremap <buffer><silent> <CR>
+        \ <Cmd>call ddu#ui#filer#do_action('itemAction')<CR>
+  nnoremap <buffer><silent> <Space>
+        \ <Cmd>call ddu#ui#filer#do_action('toggleSelectItem')<CR>
+  nnoremap <buffer> o
+        \ <Cmd>call ddu#ui#filer#do_action('expandItem',
+        \ {'mode': 'toggle'})<CR>
+  nnoremap <buffer><silent> q
+        \ <Cmd>call ddu#ui#filer#do_action('quit')<CR>
+  nnoremap <buffer> v <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'vsplit'}})<CR>
+  nnoremap <buffer> s <Cmd>call ddu#ui#filer#do_action('itemAction', {'name': 'open', 'params': {'command': 'split'}})<CR>
+
+  nnoremap <buffer> c
+    \ <Cmd>call ddu#ui#filer#multi_actions([
+    \   ['itemAction', {'name': 'copy'}],
+    \   ['clearSelectAllItems'],
+    \ ])<CR>
+  nnoremap <buffer> d
+    \ <Cmd>call ddu#ui#filer#do_action('itemAction',
+    \ #{ name: 'delete' })<CR>
+  nnoremap <buffer> D
+    \ <Cmd>call ddu#ui#filer#do_action('itemAction',
+    \ #{ name: 'trash' })<CR>
+  nnoremap <buffer> m
+    \ <Cmd>call ddu#ui#filer#do_action('itemAction',
+    \ #{ name: 'move' })<CR>
+  nnoremap <buffer> r
+    \ <Cmd>call ddu#ui#filer#do_action('itemAction',
+    \ #{ name: 'rename' })<CR>
+  nnoremap <buffer> p
+    \ <Cmd>call ddu#ui#filer#do_action('itemAction',
+    \ #{ name: 'paste' })<CR>
+  nnoremap <buffer> N
+    \ <Cmd>call ddu#ui#filer#do_action('itemAction',
+    \ #{ name: 'newDirectory' })<CR>
+  nnoremap <buffer> n
+    \ <Cmd>call ddu#ui#filer#do_action('itemAction',
+    \ #{ name: 'newFile' })<CR>
+  nnoremap <buffer> ~
+    \ <Cmd>call ddu#ui#filer#do_action('itemAction',
+    \ #{ name: 'narrow', params: #{ path: expand('~') } })<CR>
+  nnoremap <buffer> h
+    \ <Cmd>call ddu#ui#filer#do_action('itemAction',
+    \ #{ name: 'narrow', params: #{ path: '..' } })<CR>
+endfunction
 '''
 hook_source = '''
 call ddu#custom#patch_global({
@@ -27,7 +77,7 @@ call ddu#custom#patch_global({
   \   'uiParams': {
   \     'std': {
   \       'filterSplitDirection': 'floating',
-  \     }
+  \     },
   \   },
   \   'kindOptions': {
   \     'file': {
@@ -41,6 +91,25 @@ call ddu#custom#patch_local('files', {
   \       'split': 'floating',
   \     }
   \   },
+  \ })
+call ddu#custom#patch_local('filer', {
+  \   'ui': 'filer',
+  \   'uiParams': {
+  \     'filer': {
+  \       'split': 'floating',
+  \     }
+  \   },
+  \   'sources': [{'name': 'file', 'params': {}}],
+  \   'sourceOptions': {
+  \     '_': {
+  \       'columns': ['icon_filename'],
+  \     },
+  \   },
+  \   'kindOptions': {
+  \     'file': {
+  \       'defaultAction': 'open',
+  \     }
+  \   }
   \ })
 '''
 
@@ -77,10 +146,6 @@ nnoremap <buffer> <CR> <Cmd>call ddu#ui#ff#close()<CR>
 repo = 'Shougo/ddu-commands.vim'
 depends = 'ddu.vim'
 on_cmd = 'Ddu'
-
-[[plugins]]
-repo = 'Shougo/ddu-ui-std'
-on_source = 'ddu.vim'
 
 [[plugins]]
 repo = 'Shougo/ddu-ui-ff'
@@ -120,4 +185,16 @@ on_source = 'ddu.vim'
 
 [[plugins]]
 repo = 'Shougo/ddu-kind-file'
+on_source = 'ddu.vim'
+
+[[plugins]]
+repo = 'Shougo/ddu-ui-filer'
+on_source = 'ddu.vim'
+
+[[plugins]]
+repo = 'ryota2357/ddu-column-icon_filename'
+on_source = 'ddu.vim'
+
+[[plugins]]
+repo = 'shun/ddu-source-buffer'
 on_source = 'ddu.vim'

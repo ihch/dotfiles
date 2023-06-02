@@ -1,0 +1,47 @@
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+on_event = ['BufRead', 'CursorHold']
+hook_post_update = 'TSUpdate'
+lua_source = '''
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = {
+        "comment",
+        "css",
+        "dockerfile",
+        "fish",
+        "gitcommit",
+        "gitignore",
+        "go",
+        "graphql",
+        "html",
+        "javascript",
+        "jsdoc",
+        "json",
+        "lua",
+        "make",
+        "markdown",
+        "prisma",
+        "python",
+        "scss",
+        "sql",
+        "toml",
+        "tsx",
+        "typescript",
+        "yaml",
+    },
+
+    sync_install = false,
+    auto_install = true,
+
+    highlight = {
+        enable = true,
+        -- disable = { "typescriptreact" }
+    },
+    autotag = {
+        enable = true,
+    }
+}
+
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
+'''
