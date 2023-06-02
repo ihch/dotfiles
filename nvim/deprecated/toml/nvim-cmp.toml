@@ -1,0 +1,122 @@
+[[plugins]]
+repo = 'neovim/nvim-lspconfig'
+# {{{
+hook_add ='''
+nnoremap <silent> <space>e <cmd>lua vim.diagnostic.open_float()<CR>
+nnoremap <silent> <C-[> <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent> <C-]> <cmd>lua vim.diagnostic.goto_next()<CR>
+nnoremap <silent> <space>q <cmd>lua vim.diagnostic.setloclist()<CR>
+nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <space>wa <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>
+nnoremap <silent> <space>wr <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>
+nnoremap <silent> <space>wl <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>
+nnoremap <silent> <space>D <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> <space>rn <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <space>a <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> <space>f <cmd>lua vim.lsp.buf.formatting()<CR>
+'''
+# }}}
+
+[[plugins]]
+repo ='williamboman/mason.nvim'
+
+[[plugins]]
+repo = 'williamboman/mason-lspconfig.nvim'
+depends = ['mason.nvim']
+lua_source = '''
+local mason = require("mason")
+local mason_lspconfig = require("mason-lspconfig")
+
+mason.setup({
+    ui = {
+        icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗"
+        }
+    }
+})
+
+local servers = {
+    "denols",
+    "tsserver",
+    "eslint",
+    "jsonls",
+    "gopls",
+    "rust_analyzer",
+    "html",
+}
+
+mason_lspconfig.setup({
+    ensure_installed = servers
+})
+'''
+
+[[plugins]]
+repo = 'hrsh7th/cmp-nvim-lsp'
+on_event = ['InsertEnter']
+
+[[plugins]]
+repo ='hrsh7th/cmp-buffer'
+on_event = ['InsertEnter']
+
+[[plugins]]
+repo = 'hrsh7th/nvim-cmp'
+# {{{
+on_event = ['InsertEnter']
+depends = ['nvim-lspconfig', 'mason-lspconfig.nvim', 'cmp_nvim_lsp']
+lua_source = '''
+local lspconfig = require('lspconfig')
+local mason_lspconfig = require("mason-lspconfig")
+local cmp = require('cmp')
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+cmp.setup({
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+    }, {
+        { name = 'buffer' },
+    }),
+    mapping = cmp.mapping.preset.insert(),
+})
+
+local setup_servers = {
+    -- "denols",
+    -- "tsserver",
+    -- "eslint",
+    "jsonls",
+    "gopls",
+    "rust_analyzer",
+    "html",
+}
+
+lspconfig.tsserver.setup({
+    capabilities = capabilities,
+    -- filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "typescript.tsx" },
+    root_dir = lspconfig.util.root_pattern("package.json"),
+})
+lspconfig.eslint.setup({
+    capabilities = capabilities,
+    -- filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "typescript.tsx" }
+})
+lspconfig.denols.setup({
+    capabilities = capabilities,
+    root_dir = lspconfig.util.root_pattern("deno.json"),
+})
+
+for _, lsp in pairs(setup_servers) do
+    require('lspconfig')[lsp].setup {
+        capabilities = capabilities,
+        flags = {
+            -- This will be the default in neovim 0.7+
+            debounce_text_changes = 150,
+        }
+    }
+end
+'''
+# }}}
