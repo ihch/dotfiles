@@ -65,6 +65,7 @@ require("lazy").setup({
     { "akinsho/toggleterm.nvim", version = '*', confit = true, event = 'CursorHold' },
     { "numToStr/Comment.nvim", event = 'VeryLazy'},
     { "norcalli/nvim-colorizer.lua", event = 'VeryLazy'},
+    { "xiyaowong/transparent.nvim", event = 'VeryLazy' },
 
     -- LSP
     { "neovim/nvim-lspconfig" },
@@ -206,20 +207,53 @@ local comment_api = require('Comment.api')
 
 
 -- ui {{{
-vim.cmd [[
-    autocmd Colorscheme * highlight Normal ctermbg=none guibg=none
-    autocmd Colorscheme * highlight NonText ctermbg=none guibg=none
-    autocmd Colorscheme * highlight LineNr ctermbg=none guibg=none
-    autocmd Colorscheme * highlight Folded ctermbg=none guibg=none
-    autocmd Colorscheme * highlight EndOfBuffer ctermbg=none guibg=none
-    autocmd Colorscheme * highlight SignColumn ctermbg=none guibg=none
+--[[ vim.cmd [[
+    " augroup TransparentBG
+    "     autocmd!
+    "     autocmd Colorscheme * highlight Normal ctermbg=none
+    "     autocmd Colorscheme * highlight NonText ctermbg=none
+    "     autocmd Colorscheme * highlight LineNr ctermbg=none
+    "     autocmd Colorscheme * highlight Folded ctermbg=none
+    "     autocmd Colorscheme * highlight EndOfBuffer ctermbg=none 
+    "     autocmd Colorscheme * highlight SignColumn ctermbg=none 
+    " augroup END
+
+    " autocmd Colorscheme * highlight Normal      ctermbg=none guibg=none
+    " autocmd Colorscheme * highlight NonText     ctermbg=none guibg=none
+    " autocmd Colorscheme * highlight LineNr      ctermbg=none guibg=none
+    " autocmd Colorscheme * highlight Folded      ctermbg=none guibg=none
+    " autocmd Colorscheme * highlight EndOfBuffer ctermbg=none guibg=none
+    " autocmd Colorscheme * highlight SignColumn  ctermbg=none guibg=none
 ]]
+
+--[[ vim.api.nvim_create_autocmd("Colorscheme", {
+    pattern = "*",
+    callback = function() 
+        vim.api.nvim_set_hl(0, "Normal",        { cterbg=none })
+        vim.api.nvim_set_hl(0, "NonText",       { cterbg=none })
+        vim.api.nvim_set_hl(0, "LineNr",        { cterbg=none })
+        vim.api.nvim_set_hl(0, "Folded",        { cterbg=none })
+        vim.api.nvim_set_hl(0, "EndOfBuffer",   { cterbg=none })
+        vim.api.nvim_set_hl(0, "SignColumn",    { cterbg=none })
+    end
+}) ]]
+
 vim.cmd('colorscheme nightfox')
 require('gitsigns').setup()
 require('nvim-autopairs').setup()
 require('sidebar-nvim').setup({ open = true })
 require('colorizer').setup()
--- }}}
+require("transparent").setup({
+  groups = { -- table: default groups
+    'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
+    'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
+    'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
+    'SignColumn', 'CursorLineNr', 'EndOfBuffer',
+  },
+  extra_groups = {}, -- table: additional groups that should be cleared
+  exclude_groups = {}, -- table: groups you don't want to clear
+})
+vim.cmd('TransparentEnable')
 
 
 -- move {{{
