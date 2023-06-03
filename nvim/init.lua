@@ -62,7 +62,7 @@ require("lazy").setup({
     { "windwp/nvim-ts-autotag" },
     { "sidebar-nvim/sidebar.nvim" },
     { "phaazon/hop.nvim", event = 'CursorHold' },
-    { "akinsho/toggleterm.nvim", version = '*', confit = true, event = 'CursorHold' },
+    { "akinsho/toggleterm.nvim", version = '*', config = true, event = 'CursorHold' },
     { "numToStr/Comment.nvim", event = 'VeryLazy'},
     { "norcalli/nvim-colorizer.lua", event = 'VeryLazy'},
     { "xiyaowong/transparent.nvim", event = 'VeryLazy' },
