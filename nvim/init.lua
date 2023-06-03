@@ -308,6 +308,7 @@ local servers = {
     "gopls",
     "rust_analyzer",
     "html",
+    "lua_ls",
 }
 
 mason_lspconfig.setup({
