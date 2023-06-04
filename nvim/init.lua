@@ -58,7 +58,7 @@ require("lazy").setup({
     },
     { "lewis6991/gitsigns.nvim", event = 'CursorHold' },
     -- { "andymass/vim-matchup", event = 'InsertEnter' },
-    { "windwp/nvim-autopairs", event = 'InsertEnter' },
+    { "cohama/lexima.vim", event = 'InsertEnter' },
     { "windwp/nvim-ts-autotag" },
     { "sidebar-nvim/sidebar.nvim" },
     { "phaazon/hop.nvim", event = 'CursorHold' },
@@ -240,7 +240,6 @@ local comment_api = require('Comment.api')
 
 vim.cmd('colorscheme nightfox')
 require('gitsigns').setup()
-require('nvim-autopairs').setup()
 require('sidebar-nvim').setup({ open = true })
 require('colorizer').setup()
 require("transparent").setup({
