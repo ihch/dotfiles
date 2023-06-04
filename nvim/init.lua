@@ -66,6 +66,8 @@ require("lazy").setup({
     { "numToStr/Comment.nvim", event = 'VeryLazy'},
     { "norcalli/nvim-colorizer.lua", event = 'VeryLazy'},
     { "xiyaowong/transparent.nvim", event = 'VeryLazy' },
+    { "nvim-lualine/lualine.nvim" },
+    { "nvim-tree/nvim-web-devicons" },
 
     -- LSP
     { "neovim/nvim-lspconfig" },
@@ -253,6 +255,8 @@ require("transparent").setup({
   exclude_groups = {}, -- table: groups you don't want to clear
 })
 vim.cmd('TransparentEnable')
+require('lualine').setup()
+-- }}}
 
 
 -- move {{{
