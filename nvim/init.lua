@@ -398,7 +398,6 @@ end
 -- }}}
 
 
--- TODO nerdfontを検討する
 -- TODO folke/todo-comments.nvim
 
 -- MEMO 参考にした
