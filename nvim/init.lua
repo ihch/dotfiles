@@ -68,6 +68,23 @@ require("lazy").setup({
     { "xiyaowong/transparent.nvim", event = 'VeryLazy' },
     { "nvim-lualine/lualine.nvim" },
     { "nvim-tree/nvim-web-devicons" },
+    {
+        "rmagatti/auto-session",
+        config = function()
+          require("auto-session").setup {
+            log_level = "error",
+            auto_session_suppress_dirs = { "~/Projects", "~/.config/nvim" },
+            post_restore_cmds = {
+                "SidebarNvimOpen",
+                "ToggleTermToggleAll",
+                "ToggleTermToggleAll",
+                "SidebarNvimResize 35",
+                -- "<esc>",
+            },
+            -- auto_session_root_dir = '~/.config/nvim/.sessions/',
+          }
+        end
+    },
 
     -- LSP
     { "neovim/nvim-lspconfig" },
