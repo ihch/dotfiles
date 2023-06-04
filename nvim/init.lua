@@ -198,6 +198,12 @@ vim.keymap.set('n', 'f', ':HopWordCurrentLine<CR>', {})
 vim.keymap.set('n', 'F', ':HopWord<CR>', {})
 vim.keymap.set('n', '<C-l>', '<cmd>exe v:count1 . "ToggleTerm"<CR>', {})
 vim.keymap.set("n", "<C-g>", "<cmd>lua tig_toggle()<CR>", { noremap = true, silent = true })
+vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+vim.keymap.set('t', 'jj', [[<C-\><C-n>]], opts)
+vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
 vim.cmd [[
     nnoremap <silent> <space>e <cmd>lua vim.diagnostic.open_float()<CR>
     nnoremap <silent> <C-[> <cmd>lua vim.diagnostic.goto_prev()<CR>
