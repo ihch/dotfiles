@@ -266,6 +266,7 @@ local comment_api = require('Comment.api')
 vim.cmd('colorscheme nightfox')
 require('gitsigns').setup()
 require('sidebar-nvim').setup({ open = true })
+vim.cmd('autocmd BufEnter SidebarNvim_* wincmd w')
 require('colorizer').setup()
 require("transparent").setup({
   groups = { -- table: default groups
