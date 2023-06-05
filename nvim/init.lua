@@ -85,6 +85,9 @@ require("lazy").setup({
           }
         end
     },
+    { "hrsh7th/vim-vsnip", event = "InsertEnter" },
+    { "hrsh7th/cmp-vsnip", event = "InsertEnter" },
+    { "rafamadriz/friendly-snippets", event = "InsertEnter" },
 
     -- LSP
     { "neovim/nvim-lspconfig" },
@@ -101,6 +104,7 @@ require("lazy").setup({
             { "hrsh7th/cmp-nvim-lsp" },
             { "hrsh7th/cmp-buffer" },
             { "hrsh7th/cmp-emoji" },
+            { "hrsh7th/cmp-vsnip" },
             { "onsails/lspkind.nvim" },
         },
     },
@@ -204,6 +208,16 @@ vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
 vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
 vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
 vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+vim.keymap.set('i', '<Tab>', function()
+        if vim.fn["vsnip#jumpable"](1) == 1 then return '<Plug>(vsnip-jump-next)'
+        else return '<Tab>'
+        end
+    end, { expr = true })
+vim.keymap.set('i', '<S-Tab>', function()
+	if vim.fn["vsnip#jumpable"](-1) == 1 then return '<Plug>(vsnip-jump-prev)'
+	else return '<Tab>'
+	end
+    end, { expr = true, remap = true })
 vim.cmd [[
     nnoremap <silent> <space>e <cmd>lua vim.diagnostic.open_float()<CR>
     nnoremap <silent> <C-[> <cmd>lua vim.diagnostic.goto_prev()<CR>
@@ -343,20 +357,27 @@ mason_lspconfig.setup({
 })
 
 cmp.setup({
-    mapping = cmp.mapping.preset.insert(),
+    mapping = cmp.mapping.preset.insert({
+	['<CR>'] = cmp.mapping.confirm({ select = true }),
+    }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp', priority = 100 },
+        { name = 'vsnip', priority = 70 },
         { name = 'emoji', priority = 50, insert = true },
     }, {
         { name = 'buffer' },
     }),
+    snippet = {
+	expand = function(args) vim.fn["vsnip#anonymous"](args.body) end,
+    },
     formatting = {
         format = require('lspkind').cmp_format({
             with_text = true,
             menu = {
                 buffer = "[A]",
                 nvim_lsp = "[LSP]",
-                emoji = "[emoji]"
+                vsnip = "[snip]",
+                emoji = "[emoji]",
             },
         })
     },
@@ -395,6 +416,16 @@ for _, lsp in pairs(setup_servers) do
         }
     }
 end
+-- }}}
+
+
+-- snippet
+-- {{{
+    vim.cmd [[
+    	let g:vsnip_filetypes = {}
+    	let g:vsnip_filetypes.javascriptreact = ['javascript']
+    	let g:vsnip_filetypes.typescriptreact = ['typescript']
+    ]]
 -- }}}
 
 
