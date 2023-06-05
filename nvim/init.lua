@@ -203,7 +203,6 @@ vim.keymap.set('n', 'F', ':HopWord<CR>', {})
 vim.keymap.set('n', '<C-l>', '<cmd>exe v:count1 . "ToggleTerm"<CR>', {})
 vim.keymap.set("n", "<C-g>", "<cmd>lua tig_toggle()<CR>", { noremap = true, silent = true })
 vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
-vim.keymap.set('t', 'jj', [[<C-\><C-n>]], opts)
 vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
 vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
 vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
@@ -227,7 +226,7 @@ vim.cmd [[
     nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
     nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
     nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
-    nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+    " "nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
     nnoremap <silent> <space>wa <cmd>lua vim.lsp.buf.add_workspace_folder()<CR>
     nnoremap <silent> <space>wr <cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>
     nnoremap <silent> <space>wl <cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>
