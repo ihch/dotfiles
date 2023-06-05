@@ -32,9 +32,9 @@ local treesitter_config = function()
         -- matchup = {
         --     enable = true,
         -- },
-        autotag = {
-            enable = true,
-        },
+        -- autotag = {
+        --     enable = true,
+        -- },
     })
 end
 
@@ -59,7 +59,7 @@ require("lazy").setup({
     { "lewis6991/gitsigns.nvim", event = 'CursorHold' },
     -- { "andymass/vim-matchup", event = 'InsertEnter' },
     { "cohama/lexima.vim", event = 'InsertEnter' },
-    { "windwp/nvim-ts-autotag" },
+    -- { "windwp/nvim-ts-autotag" },
     { "sidebar-nvim/sidebar.nvim" },
     { "phaazon/hop.nvim", event = 'CursorHold' },
     { "akinsho/toggleterm.nvim", version = '*', config = true, event = 'CursorHold' },
