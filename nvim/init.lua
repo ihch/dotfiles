@@ -392,18 +392,26 @@ local setup_servers = {
     "html",
 }
 
+local node_root_dir = lspconfig.util.root_pattern("package.json")
+local buf_name = vim.api.nvim_buf_get_name(0)
+local current_buf = vim.api.nvim_get_current_buf()
+local is_node_repo = node_root_dir(buf_name, current_buf) ~= nil
+
 lspconfig.tsserver.setup({
     capabilities = capabilities,
     -- filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "typescript.tsx" },
     root_dir = lspconfig.util.root_pattern("package.json"),
+    autostart = is_node_repo,
 })
 lspconfig.eslint.setup({
     capabilities = capabilities,
+    root_dir = lspconfig.util.root_pattern("package.json"),
+    autostart = is_node_repo,
     -- filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "typescript.tsx" }
 })
 lspconfig.denols.setup({
     capabilities = capabilities,
-    root_dir = lspconfig.util.root_pattern("deno.json"),
+    root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc", "deps.ts"),
 })
 
 for _, lsp in pairs(setup_servers) do
