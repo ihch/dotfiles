@@ -111,6 +111,14 @@ require("lazy").setup({
             { "onsails/lspkind.nvim" },
         },
     },
+    {
+        "jay-babu/mason-null-ls.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = {
+            "williamboman/mason.nvim",
+            "jose-elias-alvarez/null-ls.nvim",
+        },
+    },
 
     -- denops familly
     { "vim-denops/denops.vim" },
@@ -431,6 +439,21 @@ for _, lsp in pairs(setup_servers) do
         }
     }
 end
+
+local null_ls = require('null-ls')
+null_ls.setup({
+    handlers = {
+        prettier = null_ls.register(null_ls.builtins.formatting.prettier.with({
+            condition = function(utils)
+                return utils.root_has_file({ '.prettierrc.json', '.prettierrc.yml', '.prettierrc.yaml', '.prettierrc', '.prettierrc.js' })
+            end,
+        }))
+    }
+})
+
+require("mason-null-ls").setup({
+    automatic_setup = true,
+})
 -- }}}
 
 
