@@ -234,7 +234,7 @@ vim.cmd [[
     nnoremap <silent> <space>rn <cmd>lua vim.lsp.buf.rename()<CR>
     nnoremap <silent> <space>a <cmd>lua vim.lsp.buf.code_action()<CR>
     nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-    nnoremap <silent> <space>f <cmd>lua vim.lsp.buf.formatting()<CR>
+    nnoremap <silent> <space>f <cmd>lua vim.lsp.buf.format()<CR>
 ]]
 
 
