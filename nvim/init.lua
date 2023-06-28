@@ -17,6 +17,9 @@ vim.opt.rtp:prepend(lazypath)
 -- configs
 
 local treesitter_config = function()
+    if vim.g.vscode then
+        return
+    end
     require('nvim-treesitter.configs').setup({
         ensure_installed = {
             "comment", "css", "dockerfile", "fish",
@@ -277,6 +280,9 @@ local comment_api = require('Comment.api')
 }) ]]
 
 vim.cmd('colorscheme nightfox')
+
+if not vim.g.vscode then
+
 require('gitsigns').setup()
 require('sidebar-nvim').setup({ open = true })
 vim.cmd('autocmd BufEnter SidebarNvim_* wincmd w')
@@ -293,6 +299,8 @@ require("transparent").setup({
 })
 vim.cmd('TransparentEnable')
 require('lualine').setup()
+
+end
 -- }}}
 
 
