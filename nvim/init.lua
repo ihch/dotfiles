@@ -428,6 +428,7 @@ lspconfig.eslint.setup({
 lspconfig.denols.setup({
     capabilities = capabilities,
     root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc", "deps.ts"),
+    init_options = { importMap = "./import_map.json" },
 })
 
 for _, lsp in pairs(setup_servers) do
