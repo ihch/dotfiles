@@ -1,3 +1,7 @@
+if vim.g.vscode then
+  return
+end
+
 -- install lazy.nvim
 -- {{{
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -54,6 +58,10 @@ require("lazy").setup({
         dependencies = { 'nvim-lua/plenary.nvim' }
     },
     {
+      "nvim-telescope/telescope-file-browser.nvim",
+      dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+    },
+    {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = treesitter_config,
@@ -89,6 +97,7 @@ require("lazy").setup({
         end
     },
     { "hrsh7th/vim-vsnip", event = "InsertEnter" },
+    -- { "hrsh7th/vim-vsnip-integ" },
     { "hrsh7th/cmp-vsnip", event = "InsertEnter" },
     { "rafamadriz/friendly-snippets", event = "InsertEnter" },
 
@@ -158,8 +167,8 @@ vim.cmd [[
     set updatetime=300
 
     " indent
-    set tabstop=4
-    set shiftwidth=4
+    set tabstop=2
+    set shiftwidth=2
     set expandtab
     set smartindent
 
@@ -197,11 +206,45 @@ vim.cmd [[
 
 -- keymapping
 vim.keymap.set('i', 'jj', '<ESC>', { silent = true, noremap = true })
-local telescope = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', telescope.find_files, {})
-vim.keymap.set('n', '<leader>fg', telescope.live_grep, {})
-vim.keymap.set('n', '<leader>fb', telescope.buffers, {})
-vim.keymap.set('n', '<leader>fh', telescope.help_tags, {})
+local telescope = require('telescope')
+local telescope_actions = require('telescope.actions')
+local telescope_builtin = require('telescope.builtin')
+local telescope_filer = require('telescope').extensions.file_browser
+telescope.setup({
+  defaults = {
+    mappings = {
+      ["n"] = {
+        ["q"] = telescope_actions.close,
+      }
+    }
+  },
+  extensions = {
+    file_browser = {
+      hijack_netrw = true,
+      mappings = {
+        ["i"] = {
+          ["N"] = telescope_filer.actions.create,
+        },
+        ["n"] = {
+          ["n"] = telescope_filer.actions.create,
+          ["r"] = telescope_filer.actions.rename,
+          -- ["m"] = telescope_filer.actions.move,
+          ["d"] = telescope_filer.actions.remove,
+          ["c"] = telescope_filer.actions.copy,
+          ["h"] = telescope_filer.actions.goto_parent_dir,
+          ["/"] = function() vim.cmd('startinsert') end,
+        }
+      }
+    }
+  }
+})
+telescope.load_extension('file_browser')
+vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fv', telescope_builtin.git_status, {})
+vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
+vim.keymap.set('n', '<leader>fa', '<cmd>Telescope file_browser path=%:p:h<CR>', {})
 vim.keymap.set('n', '<leader>s',  require('sidebar-nvim').toggle, {})
 vim.keymap.set('n', '<leader>t', '<cmd>Translate<CR>')
 vim.keymap.set('v', '<leader>t', '<cmd>Translate<CR>')
@@ -365,6 +408,8 @@ local servers = {
     "rust_analyzer",
     "html",
     "lua_ls",
+    "clangd",
+    -- "biome",
 }
 
 mason_lspconfig.setup({
@@ -406,6 +451,7 @@ local setup_servers = {
     "gopls",
     "rust_analyzer",
     "html",
+    "clangd",
 }
 
 local node_root_dir = lspconfig.util.root_pattern("package.json")
@@ -461,6 +507,7 @@ require("mason-null-ls").setup({
 -- snippet
 -- {{{
     vim.cmd [[
+        " let g:vsnip_snippet_dir = [expand('~/.config/nvim/snippets')]
     	let g:vsnip_filetypes = {}
     	let g:vsnip_filetypes.javascriptreact = ['javascript']
     	let g:vsnip_filetypes.typescriptreact = ['typescript']
